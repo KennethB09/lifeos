@@ -37,6 +37,14 @@ app.post('/api/mood', async (req, res) => {
         case 'happy':
             response.mode = "Focus";
             break;
+        case 'angry':
+            response.mode = "Chill";
+            response.musicEmbed = "https://www.youtube.com/embed/2Vv-BfVoq4g";
+            break;
+        case 'meh':
+            response.mode = "Focus";
+            response.musicEmbed = "https://www.youtube.com/embed/9bZkp7q19f0";
+            break;
         default:
             response.mode = "Focus";
             response.musicEmbed = "";
