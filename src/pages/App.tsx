@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import SelectEmotion from './SelectEmotion';
-import Dashboard from './dashboard';
+import Dashboard from './Dashboard';
 
 function App() {
   const [selectedEmotion, setSelectedEmotion] = useState("")
