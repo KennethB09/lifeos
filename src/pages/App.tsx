@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import SelectEmotion from './SelectEmotion';
 
 
 function App() {
@@ -6,7 +7,7 @@ function App() {
 
   return (
     <>
-    <p className='text-red-500'>hello world</p>
+      <SelectEmotion />
     </>
   )
 }
