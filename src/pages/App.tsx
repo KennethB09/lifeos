@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import SelectEmotion from './SelectEmotion';
 import Dashboard from './Dashboard';
+import ChillMode from '../components/ChillMode';
 
 function App() {
   const [selectedEmotion, setSelectedEmotion] = useState("")
@@ -8,7 +9,7 @@ function App() {
   return (
     <>
       { selectedEmotion !== "" ?
-        <Dashboard />
+        <ChillMode />
         :
         <SelectEmotion selectedEmotion={setSelectedEmotion}/>
       }
