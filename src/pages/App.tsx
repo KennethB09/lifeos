@@ -1,20 +1,20 @@
-import { useState } from 'react';
-import SelectEmotion from './SelectEmotion';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Dashboard from './Dashboard';
-import ChillMode from '../components/ChillMode';
+import ChatRoom from './ChatRoom';
+import ChillMode from './ChillMode';
+import SelectEmotion from './SelectEmotion';
 
 function App() {
-  const [selectedEmotion, setSelectedEmotion] = useState("")
-
   return (
-    <>
-      { selectedEmotion !== "" ?
-        <ChillMode />
-        :
-        <SelectEmotion selectedEmotion={setSelectedEmotion}/>
-      }
-    </>
-  )
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<SelectEmotion />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/chatroom" element={<ChatRoom />} />
+        <Route path="/chillmode" element={<ChillMode />} />
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
-export default App
+export default App;

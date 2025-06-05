@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
-
+require('dotenv').config();
+// import OpenAI from "openai";
 const app = express();
 const router = express.Router();
 const PORT = 3000;
@@ -16,8 +17,8 @@ app.post('/api/mood', async (req, res) => {
     return res.status(400).json({ error: 'Request body is required' });
     }
     
-    const { mood } = req.body;
-    // Validate mood input
+    const mood = req.body.mode;
+    console.log("Received mood:", mood);
 
     if (!mood) {
         return res.status(400).json({ error: 'Mood is required' });
@@ -31,7 +32,7 @@ app.post('/api/mood', async (req, res) => {
     switch (mood.toLowerCase()) {
         case 'stressed':
             response.mode = "Chill";
-            response.musicEmbed = "https://www.youtube.com/embed/hHW1oY26kxQ";
+            response.musicEmbed = "https://www.youtube.com/embed/jfKfPfyJRdk?si=TBZe4VEVyiqO_Cq8";
             break;
         case 'sad':
             response.mode = "Chill";
@@ -53,22 +54,27 @@ app.post('/api/mood', async (req, res) => {
             response.musicEmbed = "";
     }
 
-   await res.json(response);
-    
-    
-   // res.status(500).json({ error: 'Internal server error' });
+   res.json(response);
     
 });
 
-app.get("/api/focus-advice", async (req, res) => {
+app.post("/api/focus-advice", async (req, res) => {
+
+     if (!req.body) {
+    return res.status(400).json({ error: 'Request body is required' });
+    }
+    
+    const message = req.body.content;
+    console.log("Received message:", message);
+
     try {
-        const response = await axios.post('https://api.deepseek.com/v1/chat/completions',
+        const response = await axios.post(process.env.OPEN_ROUTER_API_URL,
             {
-                model: "deepseek-chat",
+                model: "deepseek/deepseek-chat:free",
                 messages: [
                     {
                         role: "user",
-                        content: "Give me a short productivity tip for staying focused."
+                        content: message
                     }
                 ],
                 max_tokens: 100,
@@ -76,12 +82,14 @@ app.get("/api/focus-advice", async (req, res) => {
             },
             {
                 headers: {
-                    Authorization: `Bearer sk-7e3a6813b0604f71a7e28d91f4a83213`, // Replace with your actual API key
+                    Authorization: `Bearer ${process.env.OPEN_ROUTER_API_KEY}`,
                     'Content-Type': 'application/json'
                 }
             }
         );
-
+        if (!response.data || !response.data.choices || response.data.choices.length === 0) {
+            return res.status(500).json({ error: 'No advice received from the API' });
+        }
         const tip = response.data.choices[0].message.content.trim();
         res.json({ tip });
     

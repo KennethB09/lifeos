@@ -1,5 +1,7 @@
-import { useState } from "react";
-import React from "react";
+import { useState, useContext } from "react";
+import { useNavigate } from 'react-router-dom'
+import { AppContext } from '../contexts/AppContext';
+
 import happyEmoji from "../assets/images/happy.png";
 import sadEmoji from "../assets/images/sad.png";
 import angryEmoji from "../assets/images/angry.png";
@@ -17,10 +19,13 @@ type EmojiMap = {
 }
 
 type SelectEmotionProps = {
-    selectedEmotion: React.Dispatch<React.SetStateAction<string>>
+   
 }
 
-function SelectEmotion({ selectedEmotion }: SelectEmotionProps) {
+function SelectEmotion({ }: SelectEmotionProps) {
+
+    const { handeModeSection } = useContext(AppContext);
+    const navigate = useNavigate();
 
     const [selectEmoji, useSelectEmoji] = useState<Emoji>({
         Emoji: happyEmoji,
@@ -58,6 +63,11 @@ function SelectEmotion({ selectedEmotion }: SelectEmotionProps) {
 
     const moodsArr: string[] = ["happy", "sad", "angry", "stressed", "meh"];
 
+    function moodSelector(mood: string) {
+        handeModeSection(mood);
+        navigate('/dashboard');
+    }
+
     return (
         <div className={"text-center h-screen p-5 py-8 flex flex-col justify-between" + ` ${selectEmoji.bg}`}>
             <div className="h-1/2 flex flex-col justify-center">
@@ -78,7 +88,7 @@ function SelectEmotion({ selectedEmotion }: SelectEmotionProps) {
                         ))
                     }
                 </div>
-                <button className="w-full h-16 rounded-sm bg-slate-200 font-semibold text-gray-900 text-3xl px-2 mt-12" onClick={() => selectedEmotion(selectEmoji!.name)}>Continue</button>
+                <button className="w-full h-16 rounded-sm bg-slate-200 font-semibold text-gray-900 text-3xl px-2 mt-12" onClick={() => moodSelector(selectEmoji!.name)}>Continue</button>
             </div>
         </div>
     )

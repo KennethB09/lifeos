@@ -1,8 +1,13 @@
-import React from 'react'
+import { useNavigate } from 'react-router-dom'
 
 function Dashboard() {
+  const navigate = useNavigate();
+
   return (
-    <div>Dashboard</div>
+    <div>
+      <button onClick={() => navigate('/chatroom')}>Chatroom</button>
+      <button onClick={() => navigate('/chillmode')}>Chillmode</button>
+    </div>
   )
 }
 
