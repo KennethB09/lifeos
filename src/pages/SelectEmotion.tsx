@@ -1,12 +1,19 @@
 import { useState } from "react";
 import React from "react";
+import happyEmoji from "../assets/images/happy.png";
+import sadEmoji from "../assets/images/sad.png";
+import angryEmoji from "../assets/images/angry.png";
+import stressedEmoji from "../assets/images/stressed.png";
+import mehEmoji from "../assets/images/meh.png";
 
-type emoji = {
-    happy: string,
-    sad: string,
-    angry: string,
-    stressed: string,
-    meh: string,
+type Emoji = {
+    Emoji: string,
+    name: string,
+    bg: string
+}
+
+type EmojiMap = {
+    [key: string]: Emoji
 }
 
 type SelectEmotionProps = {
@@ -15,36 +22,63 @@ type SelectEmotionProps = {
 
 function SelectEmotion({ selectedEmotion }: SelectEmotionProps) {
 
-    const [selectEmoji, useSelectEmoji] = useState("");
+    const [selectEmoji, useSelectEmoji] = useState<Emoji>({
+        Emoji: happyEmoji,
+        name: "happy",
+        bg: "bg-yellow-500"
+    });
 
-    const emoji: emoji = {
-        happy: "😊",
-        sad: "😢",
-        angry: "😠",
-        stressed: "😰",
-        meh: "😐",
+    const emojiList: EmojiMap = {
+        happy: {
+            Emoji: happyEmoji,
+            name: "happy",
+            bg: "bg-yellow-500"
+        },
+        sad: {
+            Emoji: sadEmoji,
+            name: "sad",
+            bg: "bg-gray-500"
+        },
+        angry: {
+            Emoji: angryEmoji,
+            name: "angry",
+            bg: "bg-red-300"
+        },
+        stressed: {
+            Emoji: stressedEmoji,
+            name: "stressed",
+            bg: "bg-yellow-600"
+        },
+        meh: {
+            Emoji: mehEmoji,
+            name: "meh",
+            bg: "bg-yellow-500"
+        }
     }
 
-    const moodsArr: string[] = ["happy", "sad", "angry", "stressed", "meh"]; 
+    const moodsArr: string[] = ["happy", "sad", "angry", "stressed", "meh"];
 
     return (
-        <div className="text-center h-screen bg-yellow-300 p-5 flex flex-col justify-between">
+        <div className={"text-center h-screen p-5 py-8 flex flex-col justify-between" + ` ${selectEmoji.bg}`}>
             <div className="h-1/2 flex flex-col justify-center">
                 <div className="flex flex-col gap-3">
-                    <p className="font-semibold text-2xl">I'm feeling:</p>
-                    <h1 className="text-9xl">{selectEmoji}</h1>
-                    <h2>{}</h2>
+                    <p className="font-semibold text-lg">I'm feeling:</p>
+                   <img src={selectEmoji.Emoji} />
+                   <h2 className="font-semibold text-3xl capitalize">{selectEmoji.name}</h2>
                 </div>
             </div>
             <div className="h-min">
-                <div className="flex gap-1">
-                {
-                    moodsArr.map(e => (
-                        <button className="rounded-sm aspect-square bg-slate-200 p-3 text-4xl" onClick={() => useSelectEmoji(emoji[e as keyof typeof emoji])} key={e}>{emoji[e as keyof typeof emoji]}</button>
-                    ))
-                }
+                <div className="flex flex-wrap gap-2 justify-center items-center">
+                    {
+                        moodsArr.map(e => (
+                            <button className="rounded-sm w-1/4 flex flex-col justify-center items-center aspect-square bg-slate-200 p-3" onClick={() => useSelectEmoji(emojiList[e])} key={e}>
+                                <img src={emojiList[e].Emoji} alt={emojiList[e].name} className="w-12 aspect-square" />
+                                <p className="text-xs font-semibold capitalize">{emojiList[e].name}</p>
+                            </button>
+                        ))
+                    }
                 </div>
-                <button className="w-full h-16 rounded-sm bg-slate-200 font-semibold text-gray-900 text-3xl px-2 mt-12" onClick={() => selectedEmotion(selectEmoji)}>Continue</button>
+                <button className="w-full h-16 rounded-sm bg-slate-200 font-semibold text-gray-900 text-3xl px-2 mt-12" onClick={() => selectedEmotion(selectEmoji!.name)}>Continue</button>
             </div>
         </div>
     )
